@@ -37,6 +37,20 @@ module TttCore
       end
     end
 
+    describe "#player_chooses" do
+      let(:space) { 1 }
+
+      it "sets mark in chosen space on board" do
+        @game.player_chooses(space)
+        expect(@board.get_mark(space)).to eq @player_one.mark
+      end
+
+      it "switches players" do
+        @game.player_chooses(space)
+        expect(@game.current_player).to be @player_two
+      end
+    end
+
     describe "#over?" do
       context "when board is not in game over state" do
         it "returns false" do
