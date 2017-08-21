@@ -2,6 +2,7 @@ module TttCore
   class Game
     attr_reader :board
     attr_reader :current_player
+    attr_reader :next_player
 
     def self.play(board, player_one, player_two)
       game = new(board, player_one, player_two)
