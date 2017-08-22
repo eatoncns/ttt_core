@@ -5,8 +5,8 @@ module TttCore
   RSpec.describe Game do
     before(:each) do
       @board = Board.new
-      @player_one = double("player_one", {:mark => "X", :choose_space => @board.random_space})
-      @player_two = double("player_two", {:mark => "O", :choose_space => @board.random_space})
+      @player_one = double("player_one", {:mark => "X", :choose_space => random_space(@board)})
+      @player_two = double("player_two", {:mark => "O", :choose_space => random_space(@board)})
       @game = Game.new(@board, @player_one, @player_two)
     end
 
@@ -30,7 +30,7 @@ module TttCore
       end
 
       it "sets mark in chosen space on board" do
-        space = @board.random_space
+        space = random_space(@board)
         allow(@player_one).to receive(:choose_space).and_return(space)
         @game.take_turn()
         expect(@board.get_mark(space)).to eq @player_one.mark
