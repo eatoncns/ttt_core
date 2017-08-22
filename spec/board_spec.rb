@@ -37,7 +37,7 @@ module TttCore
 
       context "when #set_mark has been called for space" do
         it "returns the same mark" do
-          space = board.random_space
+          space = random_space(board)
           board.set_mark(space, "X")
           expect(board.get_mark(space)).to eq "X"
         end
@@ -65,7 +65,7 @@ module TttCore
     describe "#remove_mark" do
       context "when space is populated" do
         it "removes space" do
-          space = board.random_space()
+          space = random_space(board)
           board.set_mark(space, "X")
           board.remove_mark(space)
           expect(board.get_mark(space).empty?).to be true
@@ -74,7 +74,7 @@ module TttCore
 
       context "when space is empty" do
         it "leaves space empty" do
-          space = board.random_space()
+          space = random_space(board)
           board.remove_mark(space)
           expect(board.get_mark(space).empty?).to be true
         end

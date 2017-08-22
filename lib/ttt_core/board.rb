@@ -57,10 +57,6 @@ module TttCore
       (1..@size).select { |space| get_mark(space).empty? }
     end
 
-    def random_space
-      (1..@size).to_a.sample
-    end
-
     def space_rows
       (1..@size).each_slice(@dimension)
     end
