@@ -56,9 +56,9 @@ module TttCore
     def empty_spaces
       (1..@size).select { |space| get_mark(space).empty? }
     end
-
-    def space_rows
-      (1..@size).each_slice(@dimension)
+    
+    def state_hash
+      @state_hash.get()
     end
 
 
@@ -80,51 +80,48 @@ module TttCore
       board
     end
 
-    def state_hash
-      @state_hash.get()
-    end
-
     private
-    def valid_space(space)
-      space >= 1 && space <= @size
-    end
 
-    def validate_space(space)
-      if !valid_space(space)
-        raise(IndexError, "space #{space} out of board bounds: (1..#{@size})")
+      def valid_space(space)
+        space >= 1 && space <= @size
       end
-    end
 
-    def rows
-      @board.each_slice(@dimension).to_a
-    end
+      def validate_space(space)
+        if !valid_space(space)
+          raise(IndexError, "space #{space} out of board bounds: (1..#{@size})")
+        end
+      end
 
-    def columns
-      rows.transpose
-    end
+      def rows
+        @board.each_slice(@dimension).to_a
+      end
 
-    def column_from_rows(&col_offset)
-      (0..@dimension-1).collect { |row| @board[row*@dimension + col_offset.call(row)] }
-    end
+      def columns
+        rows.transpose
+      end
 
-    def diagonals
-      [] << column_from_rows { |row| row } << column_from_rows { |row| @dimension-1-row }
-    end
+      def column_from_rows(&col_offset)
+        (0..@dimension-1).collect { |row| @board[row*@dimension + col_offset.call(row)] }
+      end
 
-    def lines
-      rows + columns + diagonals
-    end
+      def diagonals
+        [] << column_from_rows { |row| row } << column_from_rows { |row| @dimension-1-row }
+      end
 
-    def winning_line?(line)
-      !line.first.empty? && line.all? { |mark| mark == line.first } 
-    end
+      def lines
+        rows + columns + diagonals
+      end
 
-    def winning_line_present?
-      lines.any? { |line| winning_line?(line) }
-    end
+      def winning_line?(line)
+        !line.first.empty? && line.all? { |mark| mark == line.first } 
+      end
 
-    def all_spaces_taken?
-      @spaces_marked == @size 
-    end
+      def winning_line_present?
+        lines.any? { |line| winning_line?(line) }
+      end
+
+      def all_spaces_taken?
+        @spaces_marked == @size 
+      end
   end
 end
